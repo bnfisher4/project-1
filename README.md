@@ -11,7 +11,7 @@ This is a game where two players can take turns dropping their game piece into a
 
 ## Wireframes and Screenshots
 ![CONNECT FOUR]()
-![Pseudo Code](https://i.imgur.com/KqFiPoE.jpg)
+![PseudoCode](https://i.imgur.com/KqFiPoE.jpg)
 
 
 ## Future Enhancements

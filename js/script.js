@@ -1,9 +1,10 @@
 /*----- constants -----*/
 const PLAYERS = {
     null: 'white',
-    '1': 'blue',
+    '1': 'black',
     '-1': 'green'
 };
+
 
  
 
@@ -30,7 +31,9 @@ document.getElementById('drop').addEventListener('click', handleClick);
 //also need a function to release game piece to lowest empty row
 function handleClick(evt) {
     let selectedColumn = evt.target.dataset.column;
-    
+    console.log(selectedColumn)
+    // call a function that will loop over particular index of the sub array
+    handleCheckColumn(selectedColumn);
     turn *= -1;
     render();
 }
@@ -42,17 +45,27 @@ function init() {
     turn = 1;
     //empty game board (grid)
     grid = [
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null]
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null]
     ];
     //no winner when game starts
     winner = false;
     render();
+}
+
+function handleCheckColumn(columnIdx) {
+   for(let i = 0; i < grid.length; i++) {
+       if(grid[i][columnIdx]) {
+           grid[i - 1][columnIdx] = turn;
+           return;
+        } else if (i === grid.length - 1) {
+            grid[i][columnIdx] = turn;
+       }
+   }
 }
 
 function render() {

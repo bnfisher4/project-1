@@ -15,6 +15,8 @@ let winner;
 /*----- cached element references -----*/
 const messageEl = document.getElementById('message');
 const slotsEls = document.querySelectorAll('.slot');
+const dropEls = document.querySelectorAll('#drop');
+
 
 /*----- event listeners -----*/
 document.getElementById('restart').addEventListener('click', init);
@@ -54,6 +56,7 @@ function init() {
 }
 
 function render() {
-
+    
+    console.log('grid: ', grid)
 }
 

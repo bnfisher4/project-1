@@ -69,7 +69,17 @@ function handleCheckColumn(columnIdx) {
 }
 
 function render() {
-    
+    grid.forEach(function(columnArr, columnIdx) {
+        //I want to change the background color of the selected column idx
+        //if the bottom row is null or slot below is taken
+        //using the drop button above the column
+        //the color should correspond with the player's turn
+        if (columnIdx === null) {
+            slotsEls[columnIdx].style.backgroundColor = PLAYERS[turn];
+        } else if (columnIdx !== null) {
+            return false;
+        }
+
+    });
     console.log('grid: ', grid)
 }
-

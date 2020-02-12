@@ -1,6 +1,6 @@
 /*----- constants -----*/
 const PLAYERS = {
-    null: 'white',
+    'null': 'white',
     '1': 'black',
     '-1': 'green'
 };
@@ -29,6 +29,14 @@ document.getElementById('drop').addEventListener('click', handleClick);
 /*----- functions -----*/
 //need a function to toggle turns
 //also need a function to release game piece to lowest empty row
+//document.getElementById('grid').style.transform = 'rotate(90deg)';
+
+// function rotate() { 
+//     document.querySelector('#grid').style.transform 
+//                = 'rotate(90deg)'; 
+//     render();
+// } 
+
 function handleClick(evt) {
     let selectedColumn = evt.target.dataset.column;
     console.log(selectedColumn)
@@ -66,20 +74,28 @@ function handleCheckColumn(columnIdx) {
             grid[i][columnIdx] = turn;
        }
    }
+   render();
 }
 
+
+// function checkForWinner() {
+//     for(let i = 0; i < grid.length; i++) {
+//         if(Math.abs()
+//     }
+// }
+
+
+
 function render() {
-    grid.forEach(function(columnArr, columnIdx) {
+    grid.forEach(function(rowArr) {
+        rowArr.forEach(function(slot, idx) {
+            slotsEls[idx].style.backgroundColor = PLAYERS[slot]
+        })
         //I want to change the background color of the selected column idx
         //if the bottom row is null or slot below is taken
         //using the drop button above the column
         //the color should correspond with the player's turn
-        if (columnIdx === null) {
-            slotsEls[columnIdx].style.backgroundColor = PLAYERS[turn];
-        } else if (columnIdx !== null) {
-            return false;
-        }
-
     });
-    console.log('grid: ', grid)
+     console.log('grid: ', grid)
 }
+// console.log(slotsEls);

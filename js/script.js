@@ -1,8 +1,8 @@
 /*----- constants -----*/
 const PLAYERS = {
     'null': 'white',
-    '1': 'black',
-    '-1': 'green'
+    '1': 'Black',
+    '-1': 'Green'
 };
 
 
@@ -32,9 +32,13 @@ document.getElementById('drop').addEventListener('click', handleClick);
 
 function handleClick(evt) {
     let selectedColumn = evt.target.dataset.column;
-    console.log(selectedColumn)
+    //console.log(selectedColumn)
     // call a function that will loop over particular index of the sub array
     handleCheckColumn(selectedColumn);
+
+    if (evt.target.tagName !== 'BUTTON')
+    return;
+
     turn *= -1;
     render();
 }
@@ -71,13 +75,19 @@ function handleCheckColumn(columnIdx) {
 }
 
 
-// function checkForWinner() {
-//     for(let i = 0; i < grid.length; i++) {
-//         if(Math.abs()
-//     }
-// }
+function checkForWinner() {
+    for(let i = 0; i < 6; i++) {
+        for(let j = 0; j < 7; j++)
+        if(Math.abs(grid[i][j] + grid[i + 1][j] + grid[i +2][j] + grid[i + 3][j]) === 4)
+        //return grid[row[i][j]];
+        console.log(grid[i][j]);
+    }
+}
 
 
+
+//I want to change the background color of the selected column idx
+//the color should correspond with the player's turn
 
 function render() {
     grid.forEach(function(rowArr, row) {
@@ -87,12 +97,14 @@ function render() {
         //(row * 7) + idx <- This takes the row and multiples it by the
         // num of columns and then adds the idx of that column 
         // Ex) slot 10 = (row2 *7) + 3
-
-        //I want to change the background color of the selected column idx
-        //if the bottom row is null or slot below is taken
-        //using the drop button above the column
-        //the color should correspond with the player's turn
     });
-     console.log('grid: ', grid)
+
+    if(!winner) {
+        messageEl.textContent = `${PLAYERS[turn]}'s Turn`
+    } else if (winner) {
+        messageEl.textContent = `${PLAYERS[winner]} WINS!`
+    };
+
+     //console.log('grid: ', grid)
 }
- console.log(slotsEls);
+ //console.log(slotsEls);

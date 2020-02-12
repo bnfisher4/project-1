@@ -29,13 +29,6 @@ document.getElementById('drop').addEventListener('click', handleClick);
 /*----- functions -----*/
 //need a function to toggle turns
 //also need a function to release game piece to lowest empty row
-//document.getElementById('grid').style.transform = 'rotate(90deg)';
-
-// function rotate() { 
-//     document.querySelector('#grid').style.transform 
-//                = 'rotate(90deg)'; 
-//     render();
-// } 
 
 function handleClick(evt) {
     let selectedColumn = evt.target.dataset.column;
@@ -87,10 +80,14 @@ function handleCheckColumn(columnIdx) {
 
 
 function render() {
-    grid.forEach(function(rowArr) {
+    grid.forEach(function(rowArr, row) {
         rowArr.forEach(function(slot, idx) {
-            slotsEls[idx].style.backgroundColor = PLAYERS[slot]
-        })
+            slotsEls[(row * 7) + idx].style.backgroundColor = PLAYERS[slot]
+        }) 
+        //(row * 7) + idx <- This takes the row and multiples it by the
+        // num of columns and then adds the idx of that column 
+        // Ex) slot 10 = (row2 *7) + 3
+
         //I want to change the background color of the selected column idx
         //if the bottom row is null or slot below is taken
         //using the drop button above the column
@@ -98,4 +95,4 @@ function render() {
     });
      console.log('grid: ', grid)
 }
-// console.log(slotsEls);
+ console.log(slotsEls);

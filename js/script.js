@@ -36,9 +36,13 @@ function handleClick(evt) {
     // call a function that will loop over particular index of the sub array
     handleCheckColumn(selectedColumn);
 
+    if(winner)
+    return dropEls.style.visibility = 'hidden';
+
     if (evt.target.tagName !== 'BUTTON')
     return;
 
+    winner = checkForWin();
     turn *= -1;
     render();
 }
@@ -75,14 +79,51 @@ function handleCheckColumn(columnIdx) {
 }
 
 
-function checkForWinner() {
-    for(let i = 0; i < 6; i++) {
-        for(let j = 0; j < 7; j++)
-        if(Math.abs(grid[i][j] + grid[i + 1][j] + grid[i +2][j] + grid[i + 3][j]) === 4)
-        //return grid[row[i][j]];
-        console.log(grid[i][j]);
+function checkForWin() {
+    let row = 0;
+    let col = 0
+    while(row !== 6 && col !== 7) {
+        let currentPosition = grid[row][col];
+        //vertical
+        if (grid[row][col] && 
+            grid[row - 1][col] && 
+            grid[row - 2][col] && 
+            grid[row - 3][col] === 1 ||
+            grid[row][col] && 
+            grid[row - 1][col] && 
+            grid[row - 2][col] && 
+            grid[row - 3][col] === -1) {
+                return currentPosition;
+        }
+        row++
+        if(row === 6) {
+            row = 0
+            col++
+        }
+        //horizontal
+        if (grid[row][col] &&
+            grid[row][col - 1] && 
+            grid[row][col - 2] && 
+            grid[row][col - 3] === 1 ||
+            grid[row][col] && 
+            grid[row][col - 1] && 
+            grid[row][col - 2] && 
+            grid[row][col - 3] === -1) {
+                return currentPosition;
+        } 
+        if (grid[row][col] &&
+            grid[row][col + 1] && 
+            grid[row][col + 2] && 
+            grid[row][col + 3] === 1 ||
+            grid[row][col] && 
+            grid[row][col + 1] && 
+            grid[row][col + 2] && 
+            grid[row][col + 3] === -1) {
+                return currentPosition;
+        }
     }
 }
+
 
 
 
@@ -104,7 +145,4 @@ function render() {
     } else if (winner) {
         messageEl.textContent = `${PLAYERS[winner]} WINS!`
     };
-
-     //console.log('grid: ', grid)
 }
- //console.log(slotsEls);

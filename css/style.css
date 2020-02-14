@@ -18,6 +18,10 @@ h3{
     padding: 10px;
 }
 
+.four {
+    color: #FF0000;
+}
+
 #grid {
     display: grid;
     width: 700px;
@@ -44,13 +48,16 @@ section {
     padding: 6px 0px 10px 0px;
 }
 
+section button {
+    background-color: #000000DE;
+    color: #007ACB;
+    font-size: 15px;
+}
+
 #restart {
     padding: 5px;
-    margin: 20px;
+    margin: 10px;
     background-color: #000000DE;
     color: #007ACB;
     font-size: 20px;
 }
-
-
-

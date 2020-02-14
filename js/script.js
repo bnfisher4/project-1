@@ -2,16 +2,15 @@
 const PLAYERS = {
     'null': 'white',
     '1': 'Black',
-    '-1': 'Green'
+    '-1': 'Red'
 };
 
-
- 
 
 /*----- app's state (variables) -----*/
 let grid;
 let turn;
 let winner;
+
 
 /*----- cached element references -----*/
 const messageEl = document.getElementById('message');
@@ -25,11 +24,9 @@ document.getElementById('restart').addEventListener('click', init);
 document.getElementById('drop').addEventListener('click', handleClick);
 
 
-
 /*----- functions -----*/
 //need a function to toggle turns
 //also need a function to release game piece to lowest empty row
-
 function handleClick(evt) {
     if(winner) {
         return;
@@ -97,7 +94,7 @@ function checkForWin() {
                 grid[row - 2][col] == -1 && 
                 grid[row - 3][col] == -1) {
                     return currentPosition;
-                }
+            }
         }
         //horizontal
         if (grid[row][col] == 1 &&
@@ -129,8 +126,6 @@ function checkForWin() {
 }
 
 
-
-
 //I want to change the background color of the selected column idx
 //the color should correspond with the player's turn
 
@@ -143,12 +138,9 @@ function render() {
         // num of columns and then adds the idx of that column 
         // Ex) slot 10 = (row2 *7) + 3
     });
-    
-    
     if(!winner) {
         messageEl.textContent = `${PLAYERS[turn]}'s Turn`
     } else if (winner) {
         messageEl.textContent = `${PLAYERS[winner]} WINS!`
     };
-    
 }

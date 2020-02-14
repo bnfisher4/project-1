@@ -1,17 +1,16 @@
 /*----- constants -----*/
 const PLAYERS = {
     'null': 'white',
-    '1': 'black',
-    '-1': 'green'
+    '1': 'Black',
+    '-1': 'Red'
 };
 
-
- 
 
 /*----- app's state (variables) -----*/
 let grid;
 let turn;
 let winner;
+
 
 /*----- cached element references -----*/
 const messageEl = document.getElementById('message');
@@ -25,18 +24,24 @@ document.getElementById('restart').addEventListener('click', init);
 document.getElementById('drop').addEventListener('click', handleClick);
 
 
-
 /*----- functions -----*/
 //need a function to toggle turns
 //also need a function to release game piece to lowest empty row
-
 function handleClick(evt) {
-    let selectedColumn = evt.target.dataset.column;
-    console.log(selectedColumn)
+    if(winner) {
+        return;
+    }
+    if (evt.target.tagName !== 'BUTTON') {
+        return;
+    }
     // call a function that will loop over particular index of the sub array
-    handleCheckColumn(selectedColumn);
-    turn *= -1;
-    render();
+    let selectedColumn = evt.target.dataset.column;
+    
+    if(handleCheckColumn(selectedColumn)) {
+        turn *= -1;
+        winner = checkForWin();
+        render();
+    }
 }
     
 init();
@@ -59,25 +64,70 @@ function init() {
 }
 
 function handleCheckColumn(columnIdx) {
-   for(let i = 0; i < grid.length; i++) {
+   if (grid.every((elem) => !!elem[columnIdx])) return false;
+    for(let i = 0; i < grid.length; i++) {
        if(grid[i][columnIdx]) {
            grid[i - 1][columnIdx] = turn;
-           return;
+           return true;
         } else if (i === grid.length - 1) {
             grid[i][columnIdx] = turn;
+            return true;
        }
    }
    render();
 }
 
 
-// function checkForWinner() {
-//     for(let i = 0; i < grid.length; i++) {
-//         if(Math.abs()
-//     }
-// }
+function checkForWin() {
+    let row = 0;
+    let col = 0;
+    while(row !== 6 && col !== 7) {
+        let currentPosition = grid[row][col];
+        //vertical
+        if(grid[row - 1] !== undefined && grid[row - 2] !== undefined  && grid[row - 3] !== undefined ) {
+            if (grid[row][col] == 1 && 
+                grid[row - 1][col] == 1 && 
+                grid[row - 2][col] == 1 && 
+                grid[row - 3][col] == 1 ||
+                grid[row][col] == -1 && 
+                grid[row - 1][col] == -1 && 
+                grid[row - 2][col] == -1 && 
+                grid[row - 3][col] == -1) {
+                    return currentPosition;
+            }
+        }
+        //horizontal
+        if (grid[row][col] == 1 &&
+            grid[row][col - 1] == 1 && 
+            grid[row][col - 2] == 1 && 
+            grid[row][col - 3] == 1 ||
+            grid[row][col] == -1 && 
+            grid[row][col - 1] == -1 && 
+            grid[row][col - 2] == -1 && 
+            grid[row][col - 3] == -1) {
+                return currentPosition;
+        } 
+        if (grid[row][col] == 1 &&
+            grid[row][col + 1] == 1 && 
+            grid[row][col + 2] == 1 && 
+            grid[row][col + 3] == 1 ||
+            grid[row][col] == -1 && 
+            grid[row][col + 1] == -1 && 
+            grid[row][col + 2] == -1 && 
+            grid[row][col + 3] == -1) {
+                return currentPosition;
+        }
+        row++
+        if(row === 6) {
+            row = 0
+            col++
+        }
+    }
+}
 
 
+//I want to change the background color of the selected column idx
+//the color should correspond with the player's turn
 
 function render() {
     grid.forEach(function(rowArr, row) {
@@ -87,12 +137,10 @@ function render() {
         //(row * 7) + idx <- This takes the row and multiples it by the
         // num of columns and then adds the idx of that column 
         // Ex) slot 10 = (row2 *7) + 3
-
-        //I want to change the background color of the selected column idx
-        //if the bottom row is null or slot below is taken
-        //using the drop button above the column
-        //the color should correspond with the player's turn
     });
-     console.log('grid: ', grid)
+    if(!winner) {
+        messageEl.textContent = `${PLAYERS[turn]}'s Turn`
+    } else if (winner) {
+        messageEl.textContent = `${PLAYERS[winner]} WINS!`
+    };
 }
- console.log(slotsEls);

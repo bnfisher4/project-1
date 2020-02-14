@@ -31,20 +31,20 @@ document.getElementById('drop').addEventListener('click', handleClick);
 //also need a function to release game piece to lowest empty row
 
 function handleClick(evt) {
-    let selectedColumn = evt.target.dataset.column;
-    //console.log(selectedColumn)
+    if(winner) {
+        return;
+    }
+    if (evt.target.tagName !== 'BUTTON') {
+        return;
+    }
     // call a function that will loop over particular index of the sub array
-    handleCheckColumn(selectedColumn);
-
-    if(winner)
-    return dropEls.style.visibility = 'hidden';
-
-    if (evt.target.tagName !== 'BUTTON')
-    return;
-
-    winner = checkForWin();
-    turn *= -1;
-    render();
+    let selectedColumn = evt.target.dataset.column;
+    
+    if(handleCheckColumn(selectedColumn)) {
+        turn *= -1;
+        winner = checkForWin();
+        render();
+    }
 }
     
 init();
@@ -67,12 +67,14 @@ function init() {
 }
 
 function handleCheckColumn(columnIdx) {
-   for(let i = 0; i < grid.length; i++) {
+   if (grid.every((elem) => !!elem[columnIdx])) return false;
+    for(let i = 0; i < grid.length; i++) {
        if(grid[i][columnIdx]) {
            grid[i - 1][columnIdx] = turn;
-           return;
+           return true;
         } else if (i === grid.length - 1) {
             grid[i][columnIdx] = turn;
+            return true;
        }
    }
    render();
@@ -81,45 +83,47 @@ function handleCheckColumn(columnIdx) {
 
 function checkForWin() {
     let row = 0;
-    let col = 0
+    let col = 0;
     while(row !== 6 && col !== 7) {
         let currentPosition = grid[row][col];
         //vertical
-        if (grid[row][col] && 
-            grid[row - 1][col] && 
-            grid[row - 2][col] && 
-            grid[row - 3][col] === 1 ||
-            grid[row][col] && 
-            grid[row - 1][col] && 
-            grid[row - 2][col] && 
-            grid[row - 3][col] === -1) {
+        if(grid[row - 1] !== undefined && grid[row - 2] !== undefined  && grid[row - 3] !== undefined ) {
+            if (grid[row][col] == 1 && 
+                grid[row - 1][col] == 1 && 
+                grid[row - 2][col] == 1 && 
+                grid[row - 3][col] == 1 ||
+                grid[row][col] == -1 && 
+                grid[row - 1][col] == -1 && 
+                grid[row - 2][col] == -1 && 
+                grid[row - 3][col] == -1) {
+                    return currentPosition;
+                }
+        }
+        //horizontal
+        if (grid[row][col] == 1 &&
+            grid[row][col - 1] == 1 && 
+            grid[row][col - 2] == 1 && 
+            grid[row][col - 3] == 1 ||
+            grid[row][col] == -1 && 
+            grid[row][col - 1] == -1 && 
+            grid[row][col - 2] == -1 && 
+            grid[row][col - 3] == -1) {
+                return currentPosition;
+        } 
+        if (grid[row][col] == 1 &&
+            grid[row][col + 1] == 1 && 
+            grid[row][col + 2] == 1 && 
+            grid[row][col + 3] == 1 ||
+            grid[row][col] == -1 && 
+            grid[row][col + 1] == -1 && 
+            grid[row][col + 2] == -1 && 
+            grid[row][col + 3] == -1) {
                 return currentPosition;
         }
         row++
         if(row === 6) {
             row = 0
             col++
-        }
-        //horizontal
-        if (grid[row][col] &&
-            grid[row][col - 1] && 
-            grid[row][col - 2] && 
-            grid[row][col - 3] === 1 ||
-            grid[row][col] && 
-            grid[row][col - 1] && 
-            grid[row][col - 2] && 
-            grid[row][col - 3] === -1) {
-                return currentPosition;
-        } 
-        if (grid[row][col] &&
-            grid[row][col + 1] && 
-            grid[row][col + 2] && 
-            grid[row][col + 3] === 1 ||
-            grid[row][col] && 
-            grid[row][col + 1] && 
-            grid[row][col + 2] && 
-            grid[row][col + 3] === -1) {
-                return currentPosition;
         }
     }
 }
@@ -139,10 +143,12 @@ function render() {
         // num of columns and then adds the idx of that column 
         // Ex) slot 10 = (row2 *7) + 3
     });
-
+    
+    
     if(!winner) {
         messageEl.textContent = `${PLAYERS[turn]}'s Turn`
     } else if (winner) {
         messageEl.textContent = `${PLAYERS[winner]} WINS!`
     };
+    
 }
